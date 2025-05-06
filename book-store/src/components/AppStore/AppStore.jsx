@@ -3,6 +3,7 @@ import AppStoreImg from "../../assets/app_store.png";
 import PlayStoreImg from "../../assets/play_store.png";
 import Banner from "../../assets/website/board.png";
 
+// Định nghĩa style nền cho banner (dùng ảnh board.png)
 const bannerImg = {
   backgroundImage: `url(${Banner})`,
   backgroundPosition: "center",
@@ -15,19 +16,24 @@ const bannerImg = {
 const AppStore = () => {
   return (
     <>
+      {/* Phần nền có hình + màu nền phụ trợ khi chưa load ảnh */}
       <div
         className="bg-gray-100 dark:bg-gray-800 text-white py-10"
         style={bannerImg}
       >
         <div className="container">
+          {/* Nội dung chính: dòng chữ + logo App Store */}
           <div
-            data-aos="fade-up"
+            data-aos="fade-up" // AOS animation
             data-aos-duration="300"
             className="space-y-6 max-w-xl mx-auto"
           >
-            <h1 className="text-2xl text-center sm:text-left sm:text-4xl font-semibold ">
+            {/* Tiêu đề chính */}
+            <h1 className="text-2xl text-center sm:text-left sm:text-4xl font-semibold">
               Read Books at Your Fingertips
             </h1>
+
+            {/* Hình ảnh App Store và Play Store */}
             <div className="flex flex-wrap justify-center items-center">
               <a href="#">
                 <img

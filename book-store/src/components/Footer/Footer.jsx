@@ -38,13 +38,13 @@ const Footer = () => {
             {/* Địa chỉ */}
             <div className="flex items-center gap-3">
               <FaLocationArrow />
-              <p>Noida, Uttar Pradesh</p>
+              <p>TP. Hồ Chí Minh, Việt Nam</p>
             </div>
 
             {/* Số điện thoại */}
             <div className="flex items-center gap-3 mt-3">
               <FaMobileAlt />
-              <p>+91 123456789</p>
+              <p>+84 3443989667</p>
             </div>
 
             {/* Mạng xã hội */}
@@ -121,7 +121,7 @@ const Footer = () => {
 
         {/* Phần bản quyền cuối trang */}
         <div className="text-center py-10 border-t-2 border-gray-300/50">
-          @ 2025 All rights reserved || Made with ❤️ by Ho Truong Minh Phu
+          @ 2025 All rights reserved || Made with ❤️ by Hồ Trường Minh Phú
         </div>
       </section>
     </div>
