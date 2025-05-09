@@ -32,7 +32,7 @@ const ImageList = [
 const Hero = ({ handleOrderPopup }) => {
   // State lưu ảnh, tiêu đề và mô tả hiện tại
   const [imageId, setImageId] = React.useState(Book1);
-  const [title, setTitle] = React.useState("His Life will forever be Changed");
+  const [title, setTitle] = React.useState("Cuộc đời của anh thay đổi ");
   const [description, setDescription] = React.useState(
     "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   );
