@@ -1,35 +1,36 @@
 const db = require("../config/db");
 
-// tim user theo email
+// Tìm user theo email
 const findUserByEmail = async (email) => {
-  const rows = await db.query("SELECT * FROM `users` WHERE email = ? ", [
-    email,
-  ]);
-
-  // const rows = Array.isArray(results) ? results[0] : results;
-  return rows[0];
+  try {
+    const rows = await db.query("SELECT * FROM `users` WHERE email = ?", [
+      email,
+    ]);
+    return rows[0]; // Trả về 1 user hoặc undefined
+  } catch (err) {
+    console.error("Lỗi truy vấn tìm user:", err.message);
+    throw err;
+  }
 };
 
-//tao user moi
+// Tạo user mới
 const createUser = async (user) => {
-  try {
-    const {
-      userID,
-      roleID,
-      fullName,
-      email,
-      password,
-      soDienThoai,
-      NgayThangNamSinh,
-      status,
-      // createdAt,
-      // updatedAt,
-    } = user;
+  const {
+    userID,
+    roleID,
+    fullName,
+    email,
+    password,
+    soDienThoai,
+    NgayThangNamSinh,
+    status,
+  } = user;
 
+  try {
     await db.query(
       `INSERT INTO users 
-    (userID, roleID, fullName, email, password, soDienThoai, NgayThangNamSinh, status, createdAt, updatedAt)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      (userID, roleID, fullName, email, password, soDienThoai, NgayThangNamSinh, status, createdAt, updatedAt)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         userID,
         roleID,
@@ -42,7 +43,8 @@ const createUser = async (user) => {
       ]
     );
   } catch (err) {
-    console.error("Loi co so du lieu!");
+    console.error("Lỗi tạo user:", err.message);
+    throw err;
   }
 };
 

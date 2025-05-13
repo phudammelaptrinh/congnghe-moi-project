@@ -1,21 +1,26 @@
-const mysql = require("mysql");
-const util = require("util");
+const mysql = require("mysql2/promise");
+
 //require file .env
 require("dotenv").config();
 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
+let conn;
 
-db.connect((err) => {
-  if (err) throw err;
-  console.log("Ket noi toi CSDL thanh cong");
-});
+async function connectDB() {
+  if (!conn) {
+    try {
+      connection = await mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+      });
+      console.log("Kết nối CSDL thành công");
+    } catch (err) {
+      console.error("Kết nối CSDL thất bại:", err.message);
+      throw err;
+    }
+  }
+  return conn;
+}
 
-//covert callback-> promise
-db.query = util.promisify(db.query);
-
-module.exports = db;
+module.exports = connectDB;

@@ -33,4 +33,30 @@ exports.register = async (req, res) => {
 
 //login
 
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await userModel.findUserByEmail(email);
+    if (!user) return res.status(400).json({ message: "Email không tồn tại" });
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(400).json({ message: "Mật khẩu sai" });
+
+    const token = jwt.sign(
+      { userID: user.userID, roleID: user.roleID },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.status(200).json({ message: "Đăng nhập thành công", token });
+  } catch (err) {
+    res.status(500).json({ message: "Lỗi server", error: err.message });
+  }
+};
+
 //logout
+exports.logout = (req, res) => {
+  // Nếu dùng JWT thì logout bên FE, có thể blacklist nếu cần
+  res.status(200).json({ message: "Đăng xuất thành công" });
+};

@@ -1,12 +1,28 @@
-# node_modules/
-.env
-dist/
-*.log
+# Node modules
+node_modules/
 
+# Build output
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# Editor folders
 .vscode/
 .idea/
 
+# OS system files
 .DS_Store
-Thumbs.db 
+Thumbs.db
 
-.sql
+# Database dump
+*.sql
+
+# Optional: local data/uploads
+uploads/
