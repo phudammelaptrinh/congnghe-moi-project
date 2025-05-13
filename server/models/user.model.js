@@ -1,17 +1,52 @@
 const db = require("../config/db");
 
-const createUser = (userData, callBack) => {
-  const sql = `INSERT INTO user (nguoiDung, taiKhoan, password, email, soDienThoai, id_role) VALUES (?, ?, ?, ?, ?, ?)`;
+// tim user theo email
+const findUserByEmail = async (email) => {
+  const rows = await db.query("SELECT * FROM `users` WHERE email = ? ", [
+    email,
+  ]);
 
-  const values = [
-    userData.nguoiDung,
-    userData.taiKhoan,
-    userData.password,
-    userData.email,
-    userData.soDienThoai,
-    userData.id_role || 1,
-  ];
-  db.query(sql, values, callBack);
+  // const rows = Array.isArray(results) ? results[0] : results;
+  return rows[0];
 };
 
-module.exports = { createUser };
+//tao user moi
+const createUser = async (user) => {
+  try {
+    const {
+      userID,
+      roleID,
+      fullName,
+      email,
+      password,
+      soDienThoai,
+      NgayThangNamSinh,
+      status,
+      // createdAt,
+      // updatedAt,
+    } = user;
+
+    await db.query(
+      `INSERT INTO users 
+    (userID, roleID, fullName, email, password, soDienThoai, NgayThangNamSinh, status, createdAt, updatedAt)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      [
+        userID,
+        roleID,
+        fullName,
+        email,
+        password,
+        soDienThoai,
+        NgayThangNamSinh,
+        status,
+      ]
+    );
+  } catch (err) {
+    console.error("Loi co so du lieu!");
+  }
+};
+
+module.exports = {
+  findUserByEmail,
+  createUser,
+};

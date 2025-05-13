@@ -4,8 +4,6 @@ const dotenv = require("dotenv");
 
 const cookieParser = require("cookie-parser");
 
-const authRoute = require("./routes/auth.route");
-
 // Load biến môi trường từ .env
 dotenv.config();
 
@@ -13,9 +11,10 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json()); // KHÔNG cần body-parser nếu dùng Express 4.16+
+app.use(express.json());
 
 // Routes
+const authRoute = require("./routes/auth.route");
 app.use("/api/auth", authRoute); // login, register nằm trong /api/auth
 
 // Server start

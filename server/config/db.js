@@ -1,4 +1,5 @@
 const mysql = require("mysql");
+const util = require("util");
 //require file .env
 require("dotenv").config();
 
@@ -13,5 +14,8 @@ db.connect((err) => {
   if (err) throw err;
   console.log("Ket noi toi CSDL thanh cong");
 });
+
+//covert callback-> promise
+db.query = util.promisify(db.query);
 
 module.exports = db;
