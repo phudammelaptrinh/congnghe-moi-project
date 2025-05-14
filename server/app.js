@@ -15,7 +15,19 @@ app.use(express.json());
 
 // Routes
 const authRoute = require("./routes/auth.route");
-app.use("/api/auth", authRoute); // login, register nằm trong /api/auth
+app.use("/api/auth", authRoute);
+
+const bookRoute = require("./routes/book.route");
+app.use("/api/book", bookRoute);
+
+const orderRoute = require("./routes/order.route");
+app.use("/api/book", orderRoute);
+
+//test api
+
+app.get("/", (req, res) => {
+  res.send("Server đang chạy ....");
+});
 
 // Server start
 const PORT = process.env.PORT || 3000;

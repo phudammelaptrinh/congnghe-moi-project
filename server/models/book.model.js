@@ -26,6 +26,18 @@ const Book = {
 
     return conn.query(sql, params);
   },
+
+  async findById(id_book) {
+    const db = await connectDB();
+    const sql = `
+      SELECT s.*, l.tenLoaiSach
+      FROM sach s
+      JOIN loaisach l ON s.id_LoaiSach = l.id_LoaiSach
+      WHERE s.id_book = ?
+    `;
+    const [rows] = await db.query(sql, [id_book]);
+    return rows.length > 0 ? rows[0] : null;
+  },
 };
 
-module.exports = Sach;
+module.exports = Book;
