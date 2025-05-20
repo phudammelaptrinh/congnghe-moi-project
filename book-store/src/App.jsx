@@ -1,48 +1,21 @@
-import React from "react";
-import Hero from "./components/Hero/Hero";
-import Navbar from "./components/Navbar/Navbar";
-import Services from "./components/Services/Services.jsx";
-import Banner from "./components/Banner/Banner.jsx";
-import AppStore from "./components/AppStore/AppStore.jsx";
-import Testimonial from "./components/Testimonial/Testimonial.jsx";
-import Footer from "./components/Footer/Footer.jsx";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import OrderPopup from "./components/OrderPopup/OrderPopup.jsx";
-import Books from "./components/BooksSlider/Books.jsx";
+// App.jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/homepage.pages.jsx";
+import LoginPage from "./pages/login.pages.jsx";
+import SignupPage from "./pages/signup.pages.jsx";
+import UpdateProfile from "./pages/profile.pages.jsx";
 
-const App = () => {
-  const [orderPopup, setOrderPopup] = React.useState(false);
-
-  const handleOrderPopup = () => {
-    setOrderPopup(!orderPopup);
-  };
-
-  React.useEffect(() => {
-    AOS.init({
-      offset: 100,
-      duration: 800,
-      easing: "ease-in-sine",
-      delay: 100,
-    });
-    AOS.refresh();
-  }, []);
-
+function App() {
   return (
-    <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
-      <Navbar handleOrderPopup={handleOrderPopup} />
-      <Hero handleOrderPopup={handleOrderPopup} />
-      <Services handleOrderPopup={handleOrderPopup} />
-      <Banner />
-      {/* <CoverBanner /> */}
-      <AppStore />
-      {/* <PdfReader /> */}
-      <Books />
-      <Testimonial />
-      <Footer />
-      <OrderPopup orderPopup={orderPopup} setOrderPopup={setOrderPopup} />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/profile" element={<UpdateProfile />} />
+      </Routes>
+    </BrowserRouter>
   );
-};
+}
 
 export default App;
