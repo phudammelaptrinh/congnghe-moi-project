@@ -15,9 +15,9 @@ const UpdateProfile = ({ userId }) => {
         NgayThangNamSinh,
       });
 
-      setMessage("✅ Cập nhật thành công!");
+      setMessage(" Cập nhật thành công!");
     } catch (err) {
-      setMessage("❌ Cập nhật thất bại.");
+      setMessage(" Cập nhật thất bại.");
     }
   };
 
