@@ -64,7 +64,7 @@ const Footer = () => {
           {/* Cột 2-3: Các liên kết quan trọng */}
           <div className="grid grid-cols-2 sm:grid-cols-3 col-span-2 md:pl-10">
             {/* Block 1: Important Links */}
-            <div className="py-8 px-4">
+            {/* <div className="py-8 px-4">
               <h1 className="sm:text-xl text-xl font-bold sm:text-left text-justify mb-3">
                 Important Links
               </h1>
@@ -79,10 +79,10 @@ const Footer = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
 
             {/* Block 2: Links (lặp lại giống block 1) */}
-            <div className="py-8 px-4">
+            {/* <div className="py-8 px-4">
               <h1 className="sm:text-xl text-xl font-bold sm:text-left text-justify mb-3">
                 Links
               </h1>
@@ -97,10 +97,10 @@ const Footer = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
 
             {/* Block 3: Location (cũng dùng lại link để minh họa) */}
-            <div className="py-8 px-4">
+            {/* <div className="py-8 px-4">
               <h1 className="sm:text-xl text-xl font-bold sm:text-left text-justify mb-3">
                 Location
               </h1>
@@ -115,7 +115,7 @@ const Footer = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
 

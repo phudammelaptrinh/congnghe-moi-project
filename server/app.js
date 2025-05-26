@@ -21,7 +21,7 @@ const bookRoute = require("./routes/book.route");
 app.use("/api/book", bookRoute);
 
 const orderRoute = require("./routes/order.route");
-app.use("/api/book", orderRoute);
+app.use("/api/order", orderRoute);
 
 //test api
 

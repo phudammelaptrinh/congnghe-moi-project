@@ -6,8 +6,18 @@ exports.searchBook = async (req, res) => {
     const [rows] = await Book.search({ ten, idLoaiSach });
     res.json(rows);
   } catch (err) {
-    console.error("Loi tim kiem san pham", err);
-    res.status(500).json({ message: "Loi server" });
+    console.error("Lỗi tìm kiếm sản phẩm", err);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+
+exports.getHeroBooks = async (req, res) => {
+  try {
+    const books = await Book.getBooksForHero();
+    res.status(200).json(books);
+  } catch (err) {
+    console.error("❌ Lỗi khi lấy sách Hero:", err);
+    res.status(500).json({ message: "Lỗi server" });
   }
 };
 
@@ -16,10 +26,31 @@ exports.getBookDetail = async (req, res) => {
   try {
     const book = await Book.findById(id);
     if (!book) {
-      return res.status(404).json({ message: "Khong tim thay san pham" });
+      return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
     }
+    res.status(200).json(book); // 🚀 Thêm dòng trả về dữ liệu
   } catch (err) {
-    console.err("Loi khi lay chi tiet san pham ", err);
-    res.status(500).json({ message: "Loi server" });
+    console.error("Lỗi khi lấy chi tiết sản phẩm:", err); // ✅ Đã sửa
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+
+exports.getFeaturedBooks = async (req, res) => {
+  try {
+    const books = await Book.getFeaturedBooks();
+    res.status(200).json(books);
+  } catch (err) {
+    console.error("Lỗi khi lấy sách nổi bật:", err);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+
+exports.getTopBooks = async (req, res) => {
+  try {
+    const books = await Book.getTopBooks();
+    res.status(200).json(books);
+  } catch (err) {
+    console.error("Lỗi khi lấy sách nổi bật:", err);
+    res.status(500).json({ message: "Lỗi server" });
   }
 };

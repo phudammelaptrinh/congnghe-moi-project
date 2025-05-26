@@ -1,41 +1,13 @@
-import React from "react";
-import Book1 from "../../assets/books/book2.jpg";
-import Book2 from "../../assets/books/book1.jpg";
-import Book3 from "../../assets/books/book3.jpg";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { getFolder } from "../../utils/folderMapping";
 import Vector from "../../assets/website/blue-pattern.png";
 
-// Danh sách ảnh sách, tiêu đề và mô tả
-const ImageList = [
-  {
-    id: 1,
-    img: Book1,
-    title: "His Life will forever be Changed",
-    description:
-      "lorem His Life will forever be Changed dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-  {
-    id: 2,
-    img: Book2,
-    title: "Who's there",
-    description:
-      "Who's there lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-  {
-    id: 3,
-    img: Book3,
-    title: "Lost Boy",
-    description:
-      "Lost Boy, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-];
-
 const Hero = ({ handleOrderPopup }) => {
-  // State lưu ảnh, tiêu đề và mô tả hiện tại
-  const [imageId, setImageId] = React.useState(Book1);
-  const [title, setTitle] = React.useState("Cuộc đời của anh thay đổi ");
-  const [description, setDescription] = React.useState(
-    "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  );
+  const [books, setBooks] = useState([]);
+  const [imageId, setImageId] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   // Style ảnh nền
   const bgImage = {
@@ -46,92 +18,99 @@ const Hero = ({ handleOrderPopup }) => {
     width: "100%",
   };
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:5002/api/book/hero")
+      .then((res) => {
+        const data = res.data.map((book) => ({
+          img: `/images/book/${getFolder(book.loaiSach)}/${book.hinh}`,
+          title: book.loaiSach,
+          description: book.moTa,
+        }));
+        setBooks(data);
+        if (data.length > 0) {
+          setImageId(data[0].img);
+          setTitle(data[0].title);
+          setDescription(data[0].description);
+        }
+      })
+      .catch((err) => {
+        console.error("Lỗi khi fetch hero books:", err);
+      });
+  }, []);
+
   return (
-    <>
-      {/* Hero section */}
-      <div
-        className="min-h-[550px] sm:min-h-[650px] bg-gray-100 flex justify-center items-center dark:bg-gray-950 dark:text-white duration-200"
-        style={bgImage}
-      >
-        <div className="container pb-8 sm:pb-0">
-          <div className="grid grid-cols-1 sm:grid-cols-2">
-            {/* Cột trái: Nội dung văn bản */}
-            <div
-              data-aos-once="true"
-              className="flex flex-col justify-center gap-4 pt-12 sm:pt-0 text-center sm:text-left order-2 sm:order-1"
+    <div
+      className="min-h-[550px] sm:min-h-[650px] bg-gray-100 flex justify-center items-center dark:bg-gray-950 dark:text-white duration-200"
+      style={bgImage}
+    >
+      <div className="container pb-8 sm:pb-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2">
+          {/* Văn bản */}
+          <div
+            data-aos-once="true"
+            className="flex flex-col justify-center gap-4 pt-12 sm:pt-0 text-center sm:text-left order-2 sm:order-1"
+          >
+            <h1
+              data-aos="zoom-out"
+              data-aos-duration="500"
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold"
             >
-              {/* Tiêu đề */}
-              <h1
-                data-aos="zoom-out"
-                data-aos-duration="500"
-                data-aos-once="true"
-                className="text-5xl sm:text-6xl lg:text-7xl font-bold"
-              >
-                {title}
-                {/* Tác giả hiển thị chữ gradient nhỏ dưới tiêu đề */}
-                <p class="bg-clip-text text-transparent bg-gradient-to-b from-primary text-right text-sm to-secondary">
-                  by Anonymous
-                </p>{" "}
-              </h1>
-
-              {/* Mô tả sách */}
-              <p
-                data-aos="slide-up"
-                data-aos-duration="500"
-                data-aos-delay="100"
-                className="text-sm "
-              >
-                {description}
+              {title}
+              <p className="bg-clip-text text-transparent bg-gradient-to-b from-primary text-right text-sm to-secondary">
+                by Anonymous
               </p>
+            </h1>
 
-              {/* Nút gọi hành động */}
-              <div>
-                <button
-                  onClick={handleOrderPopup}
-                  className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-2 px-4 rounded-full"
-                >
-                  Order Now
-                </button>
-              </div>
+            <p
+              data-aos="slide-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+              className="text-sm"
+            >
+              {description}
+            </p>
+
+            <div>
+              <button
+                onClick={handleOrderPopup}
+                className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-2 px-4 rounded-full"
+              >
+                Order Now
+              </button>
+            </div>
+          </div>
+
+          {/* Ảnh */}
+          <div className="min-h-[450px] sm:min-h-[450px] flex justify-center items-center relative order-1 sm:order-2 ">
+            <div className="h-[300px] sm:h-[450px] overflow-hidden flex justify-center items-center">
+              <img
+                data-aos="zoom-in"
+                src={imageId}
+                alt="hero book"
+                className="w-[300px] h-[300px] sm:h-[450px] sm:w-[450px] sm:scale-125 object-contain mx-auto"
+              />
             </div>
 
-            {/* Cột phải: Hình ảnh chính + danh sách thumbnail */}
-            <div className="min-h-[450px] sm:min-h-[450px] flex justify-center items-center relative order-1 sm:order-2 ">
-              {/* Ảnh lớn chính */}
-              <div className="h-[300px] sm:h-[450px] overflow-hidden flex justify-center items-center">
+            <div className="flex lg:flex-col lg:top-1/2 lg:-translate-y-1/2 lg:py-2 justify-center gap-4 absolute -bottom-[40px] lg:-right-1 bg-white rounded-full">
+              {books.map((item, index) => (
                 <img
-                  data-aos="zoom-in"
-                  data-aos-once="true"
-                  src={imageId}
-                  alt="biryani img"
-                  className="w-[300px] h-[300px] sm:h-[450px] sm:w-[450px] sm:scale-125 object-contain mx-auto"
+                  key={index}
+                  src={item.img}
+                  onClick={() => {
+                    setImageId(item.img);
+                    setTitle(item.title);
+                    setDescription(item.description);
+                  }}
+                  alt="thumbnail"
+                  className="max-w-[100px] h-[100px] object-contain inline-block hover:scale-110 duration-200"
                 />
-              </div>
-
-              {/* Danh sách ảnh nhỏ để chọn sách khác */}
-              <div className="flex lg:flex-col lg:top-1/2 lg:-translate-y-1/2 lg:py-2 justify-center gap-4 absolute -bottom-[40px] lg:-right-1 bg-white rounded-full">
-                {ImageList.map((item) => (
-                  <img
-                    data-aos="zoom-in"
-                    data-aos-once="true"
-                    src={item.img}
-                    onClick={() => {
-                      setImageId(
-                        item.id === 1 ? Book1 : item.id === 2 ? Book2 : Book3
-                      );
-                      setTitle(item.title);
-                      setDescription(item.description);
-                    }}
-                    alt="biryani img"
-                    className="max-w-[100px] h-[100px] object-contain inline-block hover:scale-110 duration-200"
-                  />
-                ))}
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
