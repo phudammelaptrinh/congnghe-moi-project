@@ -28,10 +28,10 @@ const Cart = {
   },
 
   // Cập nhật số lượng
-  async updateQuantity(Id_CartDetail, soluong) {
+  async updateQuantity(Id_CartDetail, soLuong) {
     return db.query(
-      "UPDATE cartdetail SET soluong = ? WHERE Id_CartDetail = ?",
-      [soluong, Id_CartDetail]
+      "UPDATE cartdetail SET soLuong = ? WHERE Id_CartDetail = ?",
+      [soLuong, Id_CartDetail]
     );
   },
 

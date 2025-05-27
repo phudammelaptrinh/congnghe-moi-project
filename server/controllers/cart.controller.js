@@ -36,21 +36,20 @@ class CartController {
   }
 
   static async updateQuantity(req, res) {
+    console.log("📦 req.body:", req.body);
+
+    const { Id_CartDetail, soLuong } = req.body || {};
+
+    if (!Id_CartDetail || soLuong === undefined) {
+      return res.status(400).json({ message: "Thiếu dữ liệu" });
+    }
+
     try {
-      const { Id_CartDetail, soluong } = req.body;
-      console.log("📥 Body nhận được:", req.body);
-
-      if (!Id_CartDetail || soluong == null) {
-        return res.status(400).json({ error: "Thiếu dữ liệu" });
-      }
-
-      const result = await Cart.updateQuantity(Id_CartDetail, soluong);
-      console.log("✅ Kết quả cập nhật:", result);
-
+      await Cart.updateQuantity(Id_CartDetail, soLuong);
       res.json({ message: "Cập nhật thành công" });
     } catch (error) {
-      console.error("❌ Lỗi SQL hoặc server:", error);
-      res.status(500).json({ error: "Lỗi server khi cập nhật giỏ hàng" });
+      console.error("❌ Lỗi UPDATE:", error); // ❗ log toàn bộ object error
+      res.status(500).json({ message: "Lỗi server", error: error.message });
     }
   }
 
