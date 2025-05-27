@@ -17,16 +17,17 @@ const ResetPassword = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/auth/reset-password", {
+      console.log("🔐 Sending token:", token);
+      await axios.post("http://localhost:5002/api/auth/reset-password", {
         token,
-        newPassword: password,
+        newPassword: password.trim(),
       });
 
-      alert("Đặt lại mật khẩu thành công!");
-      navigate("/login"); // Hoặc "/" nếu muốn về trang chủ
+      alert("✅ Đặt lại mật khẩu thành công!");
+      navigate("/login");
     } catch (err) {
-      console.error(err);
-      alert("Đặt lại mật khẩu thất bại!");
+      console.error("❌ Reset failed:", err);
+      alert(err.response?.data?.message || "Đặt lại mật khẩu thất bại!");
     }
   };
 

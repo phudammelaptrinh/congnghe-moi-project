@@ -6,6 +6,7 @@ import SignupPage from "./pages/signup.pages.jsx";
 import UpdateProfile from "./pages/profile.pages.jsx";
 import ShopCartPage from "./pages/shopcart.pages.jsx";
 import ForgotPassword from "./pages/forgot-password.pages.jsx";
+import ResetPassword from "./pages/reset-password.pages";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
         <Route path="/profile" element={<UpdateProfile />} />
         <Route path="/shopcart" element={<ShopCartPage />} />
         <Route path="/forget-password" element={<ForgotPassword />} />
-        {/* Add more routes as needed */}
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </BrowserRouter>
   );

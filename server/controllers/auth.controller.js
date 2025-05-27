@@ -97,16 +97,20 @@ class Auth {
     try {
       const user = await User.findUserByEmail(email);
       if (!user) {
-        // Không tiết lộ email có tồn tại hay không
+        // ✅ Không tiết lộ sự tồn tại của email
         return res.status(200).json({
           message: "Nếu email tồn tại, hướng dẫn đặt lại mật khẩu sẽ được gửi.",
         });
       }
 
-      const token = crypto.randomBytes(20).toString("hex");
+      const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+        expiresIn: "15m",
+      });
+
+      // ✅ Tạo link reset
       const resetLink = `http://localhost:5173/reset-password?token=${token}`;
 
-      // Gửi email
+      // ✅ Tạo transporter
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -115,58 +119,69 @@ class Auth {
         },
       });
 
-      console.log("GMAIL_USER:", process.env.GMAIL_USER);
-      console.log("GMAIL_PASS:", process.env.GMAIL_PASS);
-
+      // ✅ Gửi mail
       await transporter.sendMail({
         to: email,
         subject: "Yêu cầu đặt lại mật khẩu",
         html: `
         <p>Bạn vừa yêu cầu đặt lại mật khẩu.</p>
-        <p>Nhấn vào liên kết dưới đây để đặt lại:</p>
+        <p>Nhấn vào liên kết dưới đây để đặt lại mật khẩu:</p>
         <a href="${resetLink}">${resetLink}</a>
+        <p>Liên kết này chỉ có hiệu lực trong vòng 15 phút.</p>
       `,
       });
 
+      // ✅ Trả về kết quả
       res.status(200).json({
         message: "Nếu email tồn tại, hướng dẫn đặt lại mật khẩu sẽ được gửi.",
       });
     } catch (err) {
-      console.error("Lỗi quên mật khẩu:", err.message);
+      console.error("❌ Lỗi quên mật khẩu:", err.message);
       res.status(500).json({ message: "Đã có lỗi xảy ra." });
     }
   }
 
   static async resetPassword(req, res) {
     const { token, newPassword } = req.body;
+    console.log("📦 Body nhận được:", req.body);
+    console.log("📌 token:", token);
+    console.log("📌 newPassword:", newPassword);
 
+    // Kiểm tra input
     if (!token || !newPassword) {
+      console.log("❌ Thiếu token hoặc mật khẩu.");
       return res.status(400).json({ message: "Thiếu token hoặc mật khẩu." });
     }
 
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET); // Cần phải gửi token dạng JWT
-      const email = decoded.email;
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+      const email = decoded.email;
+      console.log("✅ Email từ token:", email);
+
+      // tim user theo email
       const user = await User.findUserByEmail(email);
       if (!user) {
-        return res
-          .status(400)
-          .json({ message: "Token không hợp lệ hoặc user không tồn tại." });
+        console.log("❌ Không tìm thấy user.");
+        return res.status(400).json({
+          message: "Token không hợp lệ hoặc người dùng không tồn tại.",
+        });
       }
 
+      //  Bam mat khau
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
+      //  Cap nhat mat khau
       await User.updatePasswordByEmail(email, hashedPassword);
 
-      return res
-        .status(200)
-        .json({ message: "Mật khẩu đã được đặt lại thành công." });
+      return res.status(200).json({
+        message: "✅ Mật khẩu đã được đặt lại thành công.",
+      });
     } catch (err) {
-      console.error("Lỗi reset password:", err.message);
-      return res
-        .status(400)
-        .json({ message: "Token hết hạn hoặc không hợp lệ." });
+      console.error("❌ Lỗi reset password:", err.message);
+      return res.status(400).json({
+        message: "Token hết hạn hoặc không hợp lệ.",
+      });
     }
   }
 }
