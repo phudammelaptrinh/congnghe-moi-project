@@ -12,8 +12,14 @@ const SignupPage = () => {
   const navigate = useNavigate();
 
   const handleSignup = async () => {
+    // Kiểm tra đầu vào
+    if (!fullName || !email || !password || !soDienThoai || !NgayThangNamSinh) {
+      setMessage("❗ Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
+
     try {
-      await axios.post("http://localhost:5002/api/signup", {
+      await axios.post("http://localhost:5002/api/auth/register", {
         fullName,
         email,
         password,
@@ -76,7 +82,15 @@ const SignupPage = () => {
           Đăng ký
         </button>
 
-        {message && <p className="mt-4 text-center text-sm">{message}</p>}
+        {message && (
+          <p
+            className={`mt-4 text-center text-sm ${
+              message.startsWith("✅") ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {message}
+          </p>
+        )}
       </div>
     </div>
   );

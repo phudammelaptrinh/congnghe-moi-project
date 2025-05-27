@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaCartPlus, FaTrashAlt } from "react-icons/fa";
+import Footer from "../components/Footer/Footer";
+
 import axios from "axios";
 import { createCart } from "../api/cart";
 import { getFolder } from "../utils/folderMapping";
@@ -178,6 +180,7 @@ function ShopCartPage() {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

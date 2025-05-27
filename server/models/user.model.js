@@ -1,9 +1,10 @@
-const db = require("../config/db");
+const connectDB = require("../config/db");
 
 // Tìm user theo email
 const findUserByEmail = async (email) => {
   try {
-    const rows = await db.query("SELECT * FROM `users` WHERE email = ?", [
+    const db = await connectDB(); // 👈 Lấy connection đúng cách
+    const [rows] = await db.query("SELECT * FROM `users` WHERE email = ?", [
       email,
     ]);
     return rows[0]; // Trả về 1 user hoặc undefined
@@ -27,6 +28,7 @@ const createUser = async (user) => {
   } = user;
 
   try {
+    const db = await connectDB(); // 👈 lấy connection
     await db.query(
       `INSERT INTO users 
       (userID, roleID, fullName, email, password, soDienThoai, NgayThangNamSinh, status, createdAt, updatedAt)

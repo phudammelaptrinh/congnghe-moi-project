@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Hero from "../components/Hero/Hero";
 import Navbar from "../components/Navbar/Navbar";
 import Services from "../components/Services/Services.jsx";
@@ -12,13 +13,17 @@ import OrderPopup from "../components/OrderPopup/OrderPopup.jsx";
 import Books from "../components/BooksSlider/Books.jsx";
 
 const HomePage = () => {
-  const [orderPopup, setOrderPopup] = React.useState(false);
+  const [orderPopup, setOrderPopup] = useState(false);
+  const navigate = useNavigate();
 
-  const handleOrderPopup = () => {
-    setOrderPopup(!orderPopup);
-  };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     AOS.init({
       offset: 100,
       duration: 800,
@@ -28,15 +33,17 @@ const HomePage = () => {
     AOS.refresh();
   }, []);
 
+  const handleOrderPopup = () => {
+    setOrderPopup(!orderPopup);
+  };
+
   return (
     <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
       <Navbar handleOrderPopup={handleOrderPopup} />
       <Hero handleOrderPopup={handleOrderPopup} />
       <Services handleOrderPopup={handleOrderPopup} />
       <Banner />
-      {/* <CoverBanner /> */}
       <AppStore />
-      {/* <PdfReader /> */}
       <Books />
       <Testimonial />
       <Footer />
