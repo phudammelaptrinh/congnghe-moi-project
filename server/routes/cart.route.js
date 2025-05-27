@@ -15,6 +15,6 @@ router.post(
 );
 router.get("/:userID", Cart.getCart);
 router.put("/update", Cart.updateQuantity);
-router.delete("/remove/:userID/:bookID", Cart.removeBook);
+router.delete("/remove/:userID/:bookID", Cart.removeBook); //complete
 
 module.exports = router;
