@@ -9,11 +9,9 @@ import Testimonial from "../components/Testimonial/Testimonial.jsx";
 import Footer from "../components/Footer/Footer.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import OrderPopup from "../components/OrderPopup/OrderPopup.jsx";
 import Books from "../components/BooksSlider/Books.jsx";
 
 const HomePage = () => {
-  const [orderPopup, setOrderPopup] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,21 +31,16 @@ const HomePage = () => {
     AOS.refresh();
   }, []);
 
-  const handleOrderPopup = () => {
-    setOrderPopup(!orderPopup);
-  };
-
   return (
     <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
-      <Navbar handleOrderPopup={handleOrderPopup} />
-      <Hero handleOrderPopup={handleOrderPopup} />
-      <Services handleOrderPopup={handleOrderPopup} />
+      <Navbar />
+      <Hero />
+      <Services />
       <Banner />
       <AppStore />
       <Books />
       <Testimonial />
       <Footer />
-      <OrderPopup orderPopup={orderPopup} setOrderPopup={setOrderPopup} />
     </div>
   );
 };

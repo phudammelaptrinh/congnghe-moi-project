@@ -3,13 +3,12 @@ import axios from "axios";
 import { getFolder } from "../../utils/folderMapping";
 import Vector from "../../assets/website/blue-pattern.png";
 
-const Hero = ({ handleOrderPopup }) => {
+const Hero = () => {
   const [books, setBooks] = useState([]);
   const [imageId, setImageId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  // Style ảnh nền
   const bgImage = {
     backgroundImage: `url(${Vector})`,
     backgroundPosition: "center",
@@ -58,7 +57,7 @@ const Hero = ({ handleOrderPopup }) => {
             >
               {title}
               <p className="bg-clip-text text-transparent bg-gradient-to-b from-primary text-right text-sm to-secondary">
-                by Anonymous
+                by Industrial Bookstore
               </p>
             </h1>
 
@@ -73,7 +72,7 @@ const Hero = ({ handleOrderPopup }) => {
 
             <div>
               <button
-                onClick={handleOrderPopup}
+                onClick={() => console.log("Order Now clicked")}
                 className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-2 px-4 rounded-full"
               >
                 Order Now

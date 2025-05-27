@@ -50,7 +50,16 @@ const createUser = async (user) => {
   }
 };
 
+const updatePasswordByEmail = async (email, hashedPassword) => {
+  const db = await connectDB();
+  await db.query(
+    "UPDATE users SET password = ?, updatedAt = NOW() WHERE email = ?",
+    [hashedPassword, email]
+  );
+};
+
 module.exports = {
   findUserByEmail,
   createUser,
+  updatePasswordByEmail,
 };

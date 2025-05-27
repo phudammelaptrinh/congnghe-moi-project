@@ -3,7 +3,7 @@ import axios from "axios";
 import { FaStar } from "react-icons/fa";
 import { getFolder } from "../../utils/folderMapping";
 
-const Services = ({ handleOrderPopup }) => {
+const Services = () => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const Services = ({ handleOrderPopup }) => {
 
                 <button
                   className="bg-primary hover:scale-105 duration-300 text-white py-1 px-4 rounded-full mt-4 group-hover:bg-white group-hover:text-primary"
-                  onClick={handleOrderPopup}
+                  onClick={() => console.log("Order Now clicked")}
                 >
                   Order Now
                 </button>

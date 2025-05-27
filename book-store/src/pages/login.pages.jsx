@@ -14,6 +14,10 @@ function Login() {
     navigate("/signup");
   };
 
+  const handleGoToForgetPassword = () => {
+    navigate("/forget-password");
+  };
+
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
@@ -101,7 +105,7 @@ function Login() {
           </button>
 
           <div className="mt-10 text-sm border-b border-gray-500 py-5">
-            Forget password?
+            <a onClick={handleGoToForgetPassword}>Forget password?</a>
           </div>
 
           <div className="mt-4 text-sm flex justify-between items-center">
