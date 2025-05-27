@@ -43,7 +43,7 @@ const Book = {
     try {
       const db = await connectDB();
       const sql = `
-        SELECT hinh, moTa, tacGia, loaiSach
+        SELECT hinh, moTa, tacGia, tenSach ,loaiSach
         FROM book
         LIMIT 4
       `;
@@ -59,7 +59,7 @@ const Book = {
   async getFeaturedBooks() {
     const db = await connectDB();
     const sql = `
-    SELECT hinh, moTa, tacGia, loaiSach
+    SELECT hinh, moTa, tacGia,  tenSach ,loaiSach
     FROM book
     ORDER BY soLuong DESC
     LIMIT 3
@@ -71,7 +71,7 @@ const Book = {
   async getTopBooks() {
     const db = await connectDB();
     const sql = `
-    SELECT hinh, moTa, tacGia, loaiSach
+    SELECT hinh, moTa, tacGia, tenSach, loaiSach
     FROM book
     ORDER BY soLuong DESC
     LIMIT 5

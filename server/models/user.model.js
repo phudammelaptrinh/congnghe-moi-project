@@ -3,11 +3,11 @@ const connectDB = require("../config/db");
 // Tìm user theo email
 const findUserByEmail = async (email) => {
   try {
-    const db = await connectDB(); // 👈 Lấy connection đúng cách
+    const db = await connectDB();
     const [rows] = await db.query("SELECT * FROM `users` WHERE email = ?", [
       email,
     ]);
-    return rows[0]; // Trả về 1 user hoặc undefined
+    return rows[0];
   } catch (err) {
     console.error("Lỗi truy vấn tìm user:", err.message);
     throw err;
@@ -28,7 +28,7 @@ const createUser = async (user) => {
   } = user;
 
   try {
-    const db = await connectDB(); // 👈 lấy connection
+    const db = await connectDB();
     await db.query(
       `INSERT INTO users 
       (userID, roleID, fullName, email, password, soDienThoai, NgayThangNamSinh, status, createdAt, updatedAt)

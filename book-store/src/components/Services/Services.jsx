@@ -12,7 +12,7 @@ const Services = () => {
       .then((res) => {
         const data = res.data.map((book) => ({
           img: `/images/book/${getFolder(book.loaiSach)}/${book.hinh}`,
-          title: book.loaiSach,
+          title: book.tenSach,
           description: book.moTa,
         }));
         setBooks(data);

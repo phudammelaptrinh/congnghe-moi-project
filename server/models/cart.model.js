@@ -1,41 +1,74 @@
-const connectDB = require("../config/db");
+const db = require("../config/db");
 
 const Cart = {
-  async createCart({ userID, items }) {
-    const conn = await connectDB();
-
-    //tinh tong tien
-    const total = items.reduce((acc, item) => acc + item.gia * item.soLuong, 0);
-
-    // tao cart moi
-    const [cartResult] = await conn.query(
-      "INSERT INTO cart (userID, ngayTao, ngayCapNhat) VALUES (?, NOW(), NOW())",
-      [userID]
-    );
-
-    const id_Cart = cartResult.insertId;
-
-    // them tung san pham vao cartdetail
-    for (const item of items) {
-      await conn.query(
-        "INSERT INTO cartdetail (id_Cart, id_book, soLuong, Gia) VALUES (?, ?, ?, ?)",
-        [id_Cart, item.id_book, item.soLuong, item.gia]
-      );
-    }
-
-    return { id_Cart, total };
+  // Tìm giỏ hàng theo userID
+  async findCartByUserID(userID) {
+    const [rows] = await db.query("SELECT * FROM cart WHERE userID = ?", [
+      userID,
+    ]);
+    return rows.length > 0 ? rows[0] : null;
   },
 
-  async getCartDetail(id_Cart) {
-    const conn = await connectDB();
-    const sql = `
-      SELECT cd.*, b.tacGia, b.loaiSach, b.hinh, b.moTa, b.Gia AS giaGoc, b.tenSach
-      FROM cartdetail cd
+  // Tạo giỏ hàng mới
+  async createCart(userID) {
+    const [result] = await db.query(
+      "INSERT INTO cart (id_Cart, userID, ngayTao, ngayCapNhat) VALUES (UUID(), ?, NOW(), NOW())",
+      [userID]
+    );
+    return result;
+  },
+
+  // Thêm sách vào chi tiết giỏ hàng
+  async addToCartDetail(cartID, bookID, soLuong, gia) {
+    const [result] = await db.query(
+      "INSERT INTO cartdetail (id_CartDetail, id_Cart, id_book, soLuong, Gia) VALUES (UUID(), ?, ?, ?, ?)",
+      [cartID, bookID, soLuong, gia]
+    );
+    return result;
+  },
+
+  // Cập nhật số lượng
+  async updateQuantity(Id_CartDetail, soluong) {
+    return db.query(
+      "UPDATE cartdetail SET soluong = ? WHERE Id_CartDetail = ?",
+      [soluong, Id_CartDetail]
+    );
+  },
+
+  async removeBook(userID, bookID) {
+    return db.query(
+      `
+      DELETE cd FROM cartdetail cd
+      JOIN cart c ON cd.id_Cart = c.id_Cart
+      WHERE c.userID = ? AND cd.id_book = ?`,
+      [userID, bookID]
+    );
+  },
+
+  // Lấy danh sách chi tiết giỏ hàng của user
+  async getCartDetailsByUser(userID) {
+    try {
+      const [rows] = await db.query(
+        `
+       SELECT cd.soLuong, cd.Gia, b.tenSach, b.hinh, b.moTa
+      FROM cart c
+      JOIN cartdetail cd ON c.id_Cart = cd.id_Cart
       JOIN book b ON cd.id_book = b.id_book
-      WHERE cd.id_Cart = ?
-    `;
-    const [rows] = await conn.query(sql, [id_Cart]);
-    return rows;
+      WHERE c.userID = ?
+      `,
+        [userID]
+      );
+
+      if (!rows.length) {
+        console.log("🛒 Giỏ hàng trống hoặc không tồn tại cho userID:", userID);
+        return [];
+      }
+
+      return rows;
+    } catch (err) {
+      console.error("❌ Lỗi trong truy vấn getCartDetailsByUser:", err.message);
+      throw err;
+    }
   },
 };
 

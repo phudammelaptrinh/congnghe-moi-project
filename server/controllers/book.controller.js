@@ -28,9 +28,9 @@ exports.getBookDetail = async (req, res) => {
     if (!book) {
       return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
     }
-    res.status(200).json(book); // 🚀 Thêm dòng trả về dữ liệu
+    res.status(200).json(book); // them dong du lieu
   } catch (err) {
-    console.error("Lỗi khi lấy chi tiết sản phẩm:", err); // ✅ Đã sửa
+    console.error("Lỗi khi lấy chi tiết sản phẩm:", err);
     res.status(500).json({ message: "Lỗi server" });
   }
 };

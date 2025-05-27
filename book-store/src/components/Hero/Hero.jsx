@@ -23,7 +23,7 @@ const Hero = () => {
       .then((res) => {
         const data = res.data.map((book) => ({
           img: `/images/book/${getFolder(book.loaiSach)}/${book.hinh}`,
-          title: book.loaiSach,
+          title: book.tenSach,
           description: book.moTa,
         }));
         setBooks(data);
@@ -57,7 +57,7 @@ const Hero = () => {
             >
               {title}
               <p className="bg-clip-text text-transparent bg-gradient-to-b from-primary text-right text-sm to-secondary">
-                by Industrial Bookstore
+                by Bookstore
               </p>
             </h1>
 
