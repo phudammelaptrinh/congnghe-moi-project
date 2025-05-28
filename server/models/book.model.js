@@ -1,10 +1,7 @@
-const connectDB = require("../config/db");
 const db = require("../config/db");
-const { search } = require("../routes/auth.route");
 
 const Book = {
   async search({ ten, idLoaiSach }) {
-    const conn = await connectDB();
     let sql = `
       SELECT s.*, l.tenLoaiSach
       FROM book s
@@ -13,22 +10,21 @@ const Book = {
     `;
     const params = [];
 
-    //neu co ten thi thuc hien sql
     if (ten) {
-      sql += "AND s.tacGia LIKE ?";
-      params.push(`%${ten}`);
+      sql += " AND s.tacGia LIKE ?";
+      params.push(`%${ten}%`);
     }
 
-    if (loaiSachID) {
-      sql += "AND s.id_LoaiSach = ?";
+    if (idLoaiSach) {
+      sql += " AND s.id_LoaiSach = ?";
       params.push(idLoaiSach);
     }
 
-    return conn.query(sql, params);
+    const [rows] = await db.query(sql, params);
+    return rows;
   },
 
   async findById(id_book) {
-    const db = await connectDB();
     const sql = `
       SELECT s.*, l.tenLoaiSach
       FROM book s
@@ -41,9 +37,8 @@ const Book = {
 
   async getBooksForHero() {
     try {
-      const db = await connectDB();
       const sql = `
-        SELECT hinh, moTa, tacGia, tenSach ,loaiSach
+        SELECT hinh, moTa, tacGia, tenSach, loaiSach
         FROM book
         LIMIT 4
       `;
@@ -57,25 +52,23 @@ const Book = {
   },
 
   async getFeaturedBooks() {
-    const db = await connectDB();
     const sql = `
-    SELECT hinh, moTa, tacGia,  tenSach ,loaiSach
-    FROM book
-    ORDER BY soLuong DESC
-    LIMIT 3
-  `;
+      SELECT hinh, moTa, tacGia, tenSach, loaiSach
+      FROM book
+      ORDER BY soLuong DESC
+      LIMIT 3
+    `;
     const [rows] = await db.query(sql);
     return rows;
   },
 
   async getTopBooks() {
-    const db = await connectDB();
     const sql = `
-    SELECT hinh, moTa, tacGia, tenSach, loaiSach
-    FROM book
-    ORDER BY soLuong DESC
-    LIMIT 5
-  `;
+      SELECT hinh, moTa, tacGia, tenSach, loaiSach
+      FROM book
+      ORDER BY soLuong DESC
+      LIMIT 5
+    `;
     const [rows] = await db.query(sql);
     return rows;
   },

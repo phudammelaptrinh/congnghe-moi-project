@@ -1,10 +1,9 @@
-const connectDB = require("../config/db");
+const pool = require("../config/db");
 
 // Tìm user theo email
 const findUserByEmail = async (email) => {
   try {
-    const db = await connectDB();
-    const [rows] = await db.query("SELECT * FROM `users` WHERE email = ?", [
+    const [rows] = await pool.query("SELECT * FROM users WHERE email = ?", [
       email,
     ]);
     return rows[0];
@@ -28,8 +27,7 @@ const createUser = async (user) => {
   } = user;
 
   try {
-    const db = await connectDB();
-    await db.query(
+    await pool.query(
       `INSERT INTO users 
       (userID, roleID, fullName, email, password, soDienThoai, NgayThangNamSinh, status, createdAt, updatedAt)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
@@ -50,12 +48,17 @@ const createUser = async (user) => {
   }
 };
 
+// Cập nhật mật khẩu theo email
 const updatePasswordByEmail = async (email, hashedPassword) => {
-  const db = await connectDB();
-  await db.query(
-    "UPDATE users SET password = ?, updatedAt = NOW() WHERE email = ?",
-    [hashedPassword, email]
-  );
+  try {
+    await pool.query(
+      "UPDATE users SET password = ?, updatedAt = NOW() WHERE email = ?",
+      [hashedPassword, email]
+    );
+  } catch (err) {
+    console.error("Lỗi cập nhật mật khẩu:", err.message);
+    throw err;
+  }
 };
 
 module.exports = {
